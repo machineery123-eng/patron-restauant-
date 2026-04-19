@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrons Group | Hamilton's Premium Bar & Restaurant</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-black: #0D0D0D;
+            --color-amber: #E8682A;
+            --color-cream: #F2E8D5;
+            --color-gold: #C4A55A;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'DM Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-black);
+            color: var(--color-cream);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6, .serif {
+            font-family: var(--font-serif);
+            font-weight: 500;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Reusable Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            color: var(--color-cream);
+            border: 1px solid var(--color-cream);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.4s ease, color 0.4s ease, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--color-amber);
+            transition: left 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            z-index: -1;
+        }
+
+        .btn:hover::after {
+            left: 0;
+        }
+
+        .btn:hover {
+            border-color: var(--color-amber);
+            color: var(--color-black);
+        }
+
+        /* 1. Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background-image: url('file:///C:/Users/hi/.gemini/antigravity/brain/a148aef8-7c57-43dc-a5ca-f7b628368a30/hero_bg_1776614908826.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            transition: transform 0.2s ease-out;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(13,13,13,0.4) 0%, rgba(13,13,13,0.95) 100%);
+            z-index: -1;
+        }
+
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            color: var(--color-cream);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+            animation: textReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: rgba(242, 232, 213, 0.8);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1s forwards;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1.2s forwards;
+        }
+
+        @keyframes textReveal {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* 2. Social Proof Bar */
+        .social-proof {
+            background-color: transparent;
+            border-top: 1px solid rgba(242, 232, 213, 0.1);
+            border-bottom: 1px solid rgba(242, 232, 213, 0.1);
+            padding: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        .marquee {
+            display: flex;
+            white-space: nowrap;
+            /* Flex layout handles the positioning, just need width animation */
+            width: fit-content;
+            animation: marquee 25s linear infinite;
+        }
+
+        .marquee:hover {
+            animation-play-state: paused;
+        }
+
+        .marquee span {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--color-gold);
+            letter-spacing: 0.05em;
+            margin-right: 4rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .marquee span b {
+            font-family: var(--font-sans);
+            color: var(--color-amber);
+            font-weight: 700;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* 3. About Section */
+        .about {
+            padding: 10rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .about-img-box {
+            position: relative;
+        }
+
+        .about-img-box::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border: 1px solid var(--color-amber);
+            opacity: 0.3;
+            z-index: -1;
+            transition: inset 0.6s ease;
+        }
+
+        .about-img-box:hover::before {
+            inset: -10px;
+        }
+
+        .about-img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 4px;
+            filter: grayscale(20%) contrast(1.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .about-text h2 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: var(--color-cream);
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: rgba(242, 232, 213, 0.7);
+            margin-bottom: 3rem;
+        }
+
+        /* 4. Menu Teaser */
+        .menu-teaser {
+            padding: 10rem 5%;
+            background: linear-gradient(180deg, var(--color-black) 0%, rgba(232, 104, 42, 0.03) 50%, var(--color-black) 100%);
+            text-align: center;
+        }
+
+        .menu-header {
+            margin-bottom: 5rem;
+        }
+
+        .menu-header h2 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .menu-card {
+            position: relative;
+            height: 480px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            border: 1px solid rgba(242, 232, 213, 0.1);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.1s ease;
+        }
+
+        .menu-card:hover {
+            border-color: rgba(232, 104, 42, 0.5);
+            box-shadow: 0 0 40px rgba(232, 104, 42, 0.15);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.8s ease;
+            filter: brightness(0.7) contrast(1.1);
+        }
+
+        .menu-card:hover img {
+            transform: scale(1.1);
+            filter: brightness(1) contrast(1.1);
+        }
+
+        .menu-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0) 60%);
+            display: flex;
+            align-items: flex-end;
+            padding: 3rem 2rem;
+            transform: translateZ(30px);
+            pointer-events: none;
+        }
+
+        .menu-card-title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            color: var(--color-cream);
+        }
+
+        /* 5. Brewery Highlight */
+        .brewery {
+            padding: 10rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .brewery-text {
+            order: 1;
+        }
+
+        .brewery-text h2 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .brewery-text p {
+            font-size: 1.1rem;
+            color: rgba(242, 232, 213, 0.7);
+            margin-bottom: 3rem;
+        }
+
+        .brewery-img-box {
+            order: 2;
+            width: 100%;
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .brewery-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 6. Reservation CTA */
+        .reservation {
+            padding: 8rem 5%;
+            background-color: var(--color-amber);
+            color: var(--color-black);
+            text-align: center;
+        }
+
+        .reservation h2 {
+            font-size: clamp(4rem, 8vw, 7rem);
+            line-height: 1;
+            margin-bottom: 1rem;
+            color: var(--color-black);
+        }
+
+        .reservation .sub-headline {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        .reservation .btn-large {
+            font-size: 1.2rem;
+            padding: 1.5rem 4rem;
+            border-color: var(--color-black);
+            color: var(--color-black);
+        }
+
+        .reservation .btn-large::after {
+            background-color: var(--color-black);
+        }
+        
+        .reservation .btn-large:hover {
+            color: var(--color-amber) !important;
+            border-color: var(--color-black);
+        }
+
+        .reservation .urgency {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            font-style: italic;
+            opacity: 0.8;
+            font-weight: 500;
+            color: rgba(13,13,13,0.7);
+        }
+
+        .reservation .phone {
+            margin-top: 1rem;
+            font-weight: 700;
+            color: var(--color-black);
+        }
+
+        /* 7. Footer */
+        .footer {
+            padding: 4rem 5%;
+            border-top: 1px solid rgba(242, 232, 213, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(242, 232, 213, 0.5);
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--color-cream);
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about, .brewery {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .brewery-text { order: 2; }
+            .brewery-img-box { order: 1; }
+            
+            .hero-ctas {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Hero -->
+    <section class="hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <canvas class="hero-particles" id="heroParticles"></canvas>
+        
+        <div class="hero-content">
+            <h1 class="hero-title" id="heroTitle">
+                <!-- Words injected by JS for animation -->
+            </h1>
+            <p class="hero-subtitle">Hamilton's most talked-about bar and restaurant &mdash; now serving craft beer brewed in-house.</p>
+            <div class="hero-ctas">
+                <a href="#reserve" class="btn btn-magnetic">Book a Table &rarr;</a>
+                <a href="#brewery" class="btn btn-magnetic" style="border-color: rgba(242,232,213,0.3);">Explore Our Beers &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Social Proof Bar -->
+    <section class="social-proof">
+        <div class="marquee">
+            <!-- First Set -->
+            <div style="display:flex;">
+                <span><b>5★</b> Rated on Google</span>
+                <span><b class="counter" data-target="1000">0</b>+ Guests Served Weekly</span>
+                <span>Craft Brewed In-House</span>
+                <span>Hamilton's #1 Venue 2024</span>
+            </div>
+            <!-- Second Set -->
+            <div style="display:flex;">
+                <span><b>5★</b> Rated on Google</span>
+                <span><b class="counter" data-target="1000">0</b>+ Guests Served Weekly</span>
+                <span>Craft Brewed In-House</span>
+                <span>Hamilton's #1 Venue 2024</span>
+            </div>
+            <!-- Third Set -->
+            <div style="display:flex;">
+                <span><b>5★</b> Rated on Google</span>
+                <span><b class="counter" data-target="1000">0</b>+ Guests Served Weekly</span>
+                <span>Craft Brewed In-House</span>
+                <span>Hamilton's #1 Venue 2024</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. About Section -->
+    <section class="about" id="about">
+        <div class="about-img-box reveal">
+            <img src="file:///C:/Users/hi/.gemini/antigravity/brain/a148aef8-7c57-43dc-a5ca-f7b628368a30/about_venue_1776614923415.png" alt="Moody venue corner" class="about-img">
+        </div>
+        <div class="about-text reveal">
+            <h2>This Isn't Just a Bar.<br>It's a Ritual.</h2>
+            <p>Patrons was built for those who demand more &mdash; better drinks, bolder flavours, and an atmosphere that actually makes memories. From craft cocktails to our signature brews, every detail is intentional.</p>
+            <a href="#story" class="btn btn-magnetic">Our Story &rarr;</a>
+        </div>
+    </section>
+
+    <!-- 4. Menu Teaser Section -->
+    <section class="menu-teaser" id="menu">
+        <div class="menu-header reveal">
+            <h2>A Menu That Does the Talking.</h2>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-card reveal" style="transition-delay: 0.1s;">
+                <img src="file:///C:/Users/hi/.gemini/antigravity/brain/a148aef8-7c57-43dc-a5ca-f7b628368a30/menu_drinks_1776614939562.png" alt="Drinks Menu">
+                <div class="menu-card-overlay">
+                    <h3 class="menu-card-title">Drinks Menu</h3>
+                </div>
+            </div>
+            <div class="menu-card reveal" style="transition-delay: 0.2s;">
+                <img src="file:///C:/Users/hi/.gemini/antigravity/brain/a148aef8-7c57-43dc-a5ca-f7b628368a30/menu_food_1776614955481.png" alt="Food Menu">
+                <div class="menu-card-overlay">
+                    <h3 class="menu-card-title">Food Menu</h3>
+                </div>
+            </div>
+            <div class="menu-card reveal" style="transition-delay: 0.3s;">
+                <img src="file:///C:/Users/hi/.gemini/antigravity/brain/a148aef8-7c57-43dc-a5ca-f7b628368a30/menu_beer_1776614972083.png" alt="Craft Brewery">
+                <div class="menu-card-overlay">
+                    <h3 class="menu-card-title">Craft Brewery</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Brewery Highlight Section -->
+    <section class="brewery" id="brewery">
+        <div class="brewery-text reveal">
+            <h2>Brewed Here.<br>Poured Here.<br>Nowhere Else.</h2>
+            <p>Our craft beers aren't found on a shelf. They're born in our brewery and served cold at your table. Try them before anyone else does.</p>
+            <a href="#shop" class="btn btn-magnetic">Shop Our Craft Beers &rarr;</a>
+        </div>
+        <div class="brewery-img-box reveal">
+            <img src="file:///C:/Users/hi/.gemini/antigravity/brain/a148aef8-7c57-43dc-a5ca-f7b628368a30/brewery_highlight_1776614987689.png" alt="Brewery Highlights">
+        </div>
+    </section>
+
+    <!-- 6. Reservation CTA Section -->
+    <section class="reservation" id="reserve">
+        <div class="reveal">
+            <h2>Your Table Is Waiting.</h2>
+            <p class="sub-headline">29A Hood Street, Hamilton &mdash; Open for lunch, dinner & late nights.</p>
+            <a href="#booking" class="btn btn-large btn-magnetic">RESERVE YOUR SPOT NOW &rarr;</a>
+            <p class="phone">Or call us directly &mdash; 07 838 3838</p>
+            <p class="urgency">Weekends book out fast. Don't miss your night.</p>
+        </div>
+    </section>
+
+    <!-- 7. Footer -->
+    <footer class="footer">
+        <div class="footer-logo">Patrons.</div>
+        <p>Patrons Group Limited &mdash; A subsidiary of Ultimate Hospitality</p>
+    </footer>
+
+    <script>
+        // 1. Hero Text Word Reveal
+        const titleText = "Where Every Night Becomes a Story.";
+        const heroTitle = document.getElementById('heroTitle');
+        const words = titleText.split(' ');
+        
+        words.forEach((word, index) => {
+            const span = document.createElement('span');
+            span.innerHTML = word;
+            span.className = 'word';
+            span.style.animationDelay = `${0.3 + index * 0.15}s`;
+            heroTitle.appendChild(span);
+        });
+
+        // 2. Parallax Effect on Hero Background
+        const heroBg = document.getElementById('heroBg');
+        if(heroBg) {
+            window.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 30;
+                const y = (e.clientY / window.innerHeight - 0.5) * 30;
+                heroBg.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        }
+
+        // 3. Scroll Reveal Observer
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 4. Counters Animation
+        const counters = document.querySelectorAll('.counter');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000; // ms
+                    
+                    let start = null;
+                    const updateCounter = (timestamp) => {
+                        if (!start) start = timestamp;
+                        const progress = timestamp - start;
+                        
+                        const val = Math.min(progress / duration * target, target);
+                        counter.innerText = Math.floor(val).toLocaleString();
+                        
+                        if (progress < duration) {
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.innerText = target.toLocaleString();
+                        }
+                    };
+                    requestAnimationFrame(updateCounter);
+                    counterObserver.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+
+        // 5. 3D Tilt Effect on Menu Cards
+        const cards = document.querySelectorAll('.menu-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within the element
+                const y = e.clientY - rect.top; // y position within the element
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Calculate rotation (max 15 degrees)
+                const rotateX = ((y - centerY) / centerY) * -15;
+                const rotateY = ((x - centerX) / centerX) * 15;
+                
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // 6. Magnetic Buttons
+        const magneticBtns = document.querySelectorAll('.btn-magnetic');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // 7. Live Premium Yellow Sparks Particle System
+        const canvas = document.getElementById('heroParticles');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+            let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+            
+            const resize = () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            };
+            window.addEventListener('resize', resize);
+            resize();
+            
+            // Track mouse for 3D camera pan
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            const fov = 350;
+
+            class Particle {
+                constructor() {
+                    this.reset(true);
+                }
+                reset(initial = false) {
+                    this.x = (Math.random() - 0.5) * window.innerWidth * 3;
+                    this.y = initial ? (Math.random() - 0.5) * window.innerHeight * 3 : window.innerHeight * 1.2;
+                    this.z = Math.random() * 800; // Z-axis depth
+                    this.baseSize = Math.random() * 2 + 0.5;
+                    // High vertical speed for sparks
+                    this.speedX = (Math.random() - 0.5) * 2;
+                    this.speedY = -(Math.random() * 6 + 3);
+                    this.speedZ = (Math.random() - 0.5) * 1;
+                    
+                    // Bright vibrant yellow spark colors
+                    const colors = ['255, 235, 100', '255, 255, 200', '255, 180, 50', '255, 200, 0'];
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.alpha = Math.random() * 0.8 + 0.2;
+                    this.wobble = Math.random() * Math.PI * 2;
+                }
+                
+                update() {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    this.z += this.speedZ;
+                    
+                    // Erratic spark jitter
+                    this.wobble += 0.15;
+                    this.x += Math.sin(this.wobble) * 2;
+
+                    // Recycle particles when they float out of range
+                    if (this.y < -window.innerHeight || this.z < 0 || this.z > 1000) {
+                        this.reset();
+                    }
+                }
+                
+                draw() {
+                    // 3D Projection scale
+                    const scale = fov / (fov + this.z);
+                    
+                    // Camera offsets based on mouse position
+                    const camX = (mouse.x - width / 2) * 1.5;
+                    const camY = (mouse.y - height / 2) * 1.5;
+
+                    // Map 3D to 2D screen space
+                    const screenX = (this.x - camX) * scale + width / 2;
+                    const screenY = (this.y - camY) * scale + height / 2;
+                    
+                    // Trail length for fast-moving sparks
+                    const tailFactor = 3.5;
+                    const prevX = (this.x - this.speedX * tailFactor - Math.sin(this.wobble)*2 - camX) * scale + width / 2;
+                    const prevY = (this.y - this.speedY * tailFactor - camY) * scale + height / 2;
+
+                    // Simulate depth of field (DoF) blur relying on distance from focal plane (z: 300)
+                    const blur = Math.max(0, Math.abs(this.z - 300) / 100);
+                    const finalAlpha = this.alpha * scale; // Distant particles fade out
+
+                    ctx.beginPath();
+                    ctx.moveTo(prevX, prevY);
+                    ctx.lineTo(screenX, screenY);
+                    ctx.lineWidth = this.baseSize * scale;
+                    ctx.strokeStyle = `rgba(${this.color}, ${finalAlpha})`;
+                    ctx.lineCap = 'round';
+                    
+                    // Intense glowing
+                    ctx.shadowBlur = blur * 4 + 12;
+                    ctx.shadowColor = `rgba(${this.color}, ${finalAlpha})`;
+                    ctx.stroke();
+                    ctx.shadowBlur = 0; // Reset for performance
+                }
+            }
+
+            for (let i = 0; i < 150; i++) {
+                particles.push(new Particle());
+            }
+
+            const animate = () => {
+                ctx.clearRect(0, 0, width, height);
+                // Sort by Z for true 3D depth rendering
+                particles.sort((a, b) => b.z - a.z);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            };
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
